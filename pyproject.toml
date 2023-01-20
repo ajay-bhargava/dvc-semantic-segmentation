@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "dvc-semantic-segmentation"
+version = "0.1.0"
+description = "This is a repository for testing out semantic segmentation NN architectures, Datasets, Version Control, and Labeling Software."
+authors = ["Ajay Bhargava <bhargava.ajay@gmail.com>"]
+readme = "README.md"
+packages = [{include = "dvc_semantic_segmentation"}]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.12"
+torch = "1.13.1"
+scipy = "^1.10.0"
+dvc = {extras = ["s3"], version = "^2.41.1"}
+torchvision = "^0.14.1"
+ipykernel = "^6.20.1"
+ipython = "^8.8.0"
+matplotlib = "^3.6.3"
+
+[tool.poetry.group.dev.dependencies]
+notebook = "^6.5.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
