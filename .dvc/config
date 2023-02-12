@@ -2,3 +2,4 @@
     autostage = true
 ['remote "pets-remote"']
     url = s3://dvc-datasets/semantic-segmentation/remotes/pets-dataset/
+    version_aware = false
