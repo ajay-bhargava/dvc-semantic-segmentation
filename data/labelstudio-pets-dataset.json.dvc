@@ -1,0 +1,16 @@
+md5: 2adb1868c2d1760cb0f01a62fd155c08
+frozen: true
+deps:
+- etag: ffb94f7eba67c185fd73d4f4705c0150-6
+  size: 89956236
+  version_id: 4l_4pK43uEWjQPjfda80mY8kps9jLLZC
+  path: s3://dvc-datasets/semantic-segmentation/tracked/pets-dataset/labelstudio-pets-dataset-export.json
+outs:
+- size: 89956236
+  path: labelstudio-pets-dataset.json
+  desc: LabelStudio export of Pets Dataset for Semantic Segmentation
+  type: json
+  meta:
+    created: '2023-02-12'
+  push: false
+  md5: 296e963694f5a7cd63b97fccb7ec601b
