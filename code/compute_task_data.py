@@ -22,21 +22,20 @@ def compute_task_data() -> None:
 
     # Load the dataset and split it into train and test
     dataset = LabelStudioDataSet(Path(ARGUMENTS.dataset).resolve())
-    train, test = train_test_split(dataset, test_size=0.2, random_state=42, shuffle=True)
-
+    
     # Split the Dataset
-    output_root = Path(ARGUMENTS.output).resolve()
     train, test = train_test_split(dataset, test_size=0.2, random_state=42, shuffle=True)
 
     # Build the output test and train directory
+    output_root = Path(ARGUMENTS.output).resolve()
     Path(output_root / 'train').mkdir(parents=True, exist_ok=True)
     Path(output_root / 'test').mkdir(parents=True, exist_ok=True)
     
     # Iterate through the data. Save the image and label. 
     for dataset, name in zip([train, test], ['train', 'test']):
         counter = 0
-        pbar = tqdm(dataset, desc='Processing {} Data.'.format(name), total=len(dataset), unit = 'image', leave=False)
-        for data in dataset:
+        pbar = tqdm(dataset, desc='Processing {} data.'.format(name), total=len(dataset), unit = 'images', leave=False)
+        for data in pbar:
             # Derive the image and label
             datum = LabelStudioData(data).task_details
             for element in datum:
