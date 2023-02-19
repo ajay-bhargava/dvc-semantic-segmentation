@@ -1,13 +1,10 @@
 stages:
   compute_dataset:
     desc: This stage of the pipeline computes the dataset from a Labelstudio task.
-    cmd: '"This stage of the pipeline computes the dataset from a Labelstudio task."
-      python3 code/compute_task_data.py --dataset data/labelstudio-pets-dataset.json
-      --output data/computed/pets-dataset/'
+    cmd: python3 code/compute_task_data.py --dataset data/labelstudio-pets-dataset.json --output data/computed/pets-dataset/'
     deps:
     - code/compute_task_data.py
     - data/labelstudio-pets-dataset.json
-    - esc
     outs:
     - data/computed/pets-dataset/:
         cache: false
