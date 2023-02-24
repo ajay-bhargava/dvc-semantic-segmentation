@@ -1,0 +1,17 @@
+schema: '2.0'
+stages:
+  compute_dataset:
+    cmd: python3 code/compute_task_data.py --dataset data/labelstudio-pets-dataset.json
+      --output data/computed/pets-dataset/
+    deps:
+    - path: code/compute_task_data.py
+      md5: e3d78d5dd90d144a59c0040bb22a095c
+      size: 2209
+    - path: data/labelstudio-pets-dataset.json
+      md5: 296e963694f5a7cd63b97fccb7ec601b
+      size: 89956236
+    outs:
+    - path: data/computed/pets-dataset/
+      md5: 74705f83cc29e888440e4150ecb5249c.dir
+      size: 1525937273
+      nfiles: 14780

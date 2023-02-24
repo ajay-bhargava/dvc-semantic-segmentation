@@ -41,7 +41,7 @@ class LabelStudioData:
         else:
             return sorted(self.task['annotations'], key=lambda x: DateParser.parse(x['created_at']))[-1]
         
-    def get_image_url(self) -> str:
+    def get_image_url(self) -> tuple:
         return Split_S3(self.task['data']['image'])[0], Split_S3(self.task['data']['image'])[1]
     
     def get_task_details(self) -> list:
