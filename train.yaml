@@ -1,0 +1,4 @@
+train:
+  hyperparameters:
+    learning_rate: 0.0001
+    
