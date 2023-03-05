@@ -1,6 +1,6 @@
 from pathlib import Path
 import numpy as np, boto3
-from utils.task_parsers import LabelStudioData, LabelStudioDataSet
+from create.labelstudio_task_parsers import LabelStudioData, LabelStudioDataSet
 from sklearn.model_selection import train_test_split
 from argparse import ArgumentParser
 from tqdm import tqdm

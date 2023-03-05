@@ -10,7 +10,7 @@ from pathlib import Path
 from tqdm import tqdm
 from argparse import ArgumentParser, Namespace
 
-# Training Libraries
+# Dataset Libraries
 from loaders.dataset import IIITPetDataset
 
 # Miscellaneous Libraries
@@ -37,7 +37,7 @@ def train_model(
   try:
     dataset = IIITPetDataset(dataset_path)
   except (AssertionError, RuntimeError, IndexError):
-    print('Error: The dataset path is invalid. Please check the path and try again.')
+    logging.error('The dataset path is invalid. Please check the path and try again.')
     return
 
 if __name__ == "__main__":
@@ -46,7 +46,12 @@ if __name__ == "__main__":
 
   # Configure Logging
   logging.basicConfig(level=logging.INFO, format='[%(levelname)s] %(message)s')
+  logging.basicConfig(level=logging.ERROR, format='[%(levelname)s] %(message)s')
+
+  # Set the device
   device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
+  # Log the device
   logging.info("🤖 Welcome to UNet.")
   logging.info("Using {}".format(str(device).upper()))
 
@@ -54,3 +59,4 @@ if __name__ == "__main__":
   CONFIG = CONFIGURATOR(arguments.config)
 
   # Train the model
+  

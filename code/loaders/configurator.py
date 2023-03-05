@@ -4,7 +4,7 @@ from functools import reduce
 class CONFIGURATOR(object):
   '''
   A class that contains all the configuration options for the training process. 
-  We are going to use this in place of a YAML file that acheives the same purpose.
+  We are going to use this in place of a YAML file so that parameters are easily visible in the code as dot strings. 
   '''
   def __init__(self, path):
     self.path = path
