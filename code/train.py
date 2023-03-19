@@ -14,7 +14,7 @@ from argparse import ArgumentParser, Namespace
 from loaders.dataset import IIITPetDataset
 
 # Miscellaneous Libraries
-import logging
+from log.logger import LOGGER
 from loaders.configurator import CONFIGURATOR
 
 def parse_command_options() -> Namespace:
@@ -33,30 +33,28 @@ def train_model(
   '''
   Performs the act of training an UNet model. 
   '''
-  # 1. Create the dataset and dataloader
-  try:
-    dataset = IIITPetDataset(dataset_path)
-  except (AssertionError, RuntimeError, IndexError):
-    logging.error('The dataset path is invalid. Please check the path and try again.')
-    return
+
+
+
+
+
+
+
+
+
+
 
 if __name__ == "__main__":
   # Parse Arguments
   arguments = parse_command_options()
 
-  # Configure Logging
-  logging.basicConfig(level=logging.INFO, format='[%(levelname)s] %(message)s')
-  logging.basicConfig(level=logging.ERROR, format='[%(levelname)s] %(message)s')
-
   # Set the device
-  device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+  device = torch.device('cuda' if torch.cuda.is_available() else 'cpu' if not torch.backends.mps.is_available() else 'mps')  # type: ignore (this is a MacOS specific setting)
 
   # Log the device
-  logging.info("🤖 Welcome to UNet.")
-  logging.info("Using {}".format(str(device).upper()))
+  LOGGER.info("🤖 Welcome to UNet.")
+  LOGGER.info("Using {}".format(str(device).upper()))
 
   # Load the configuration file
   CONFIG = CONFIGURATOR(arguments.config)
-
-  # Train the model
   
