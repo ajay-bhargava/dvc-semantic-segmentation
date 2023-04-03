@@ -6,8 +6,10 @@ class CONFIGURATOR(object):
   A class that contains all the configuration options for the training process. 
   We are going to use this in place of a YAML file so that parameters are easily visible in the code as dot strings. 
   '''
-  def __init__(self, path):
-    self.path = path
+  def __init__(self, yaml_path, dataset_path, device):
+    self.path = yaml_path
+    self.dataset_path = dataset_path
+    self.device = device
     with open(self.path, 'r') as f:
       self.dictionary = yaml.safe_load(f)
 

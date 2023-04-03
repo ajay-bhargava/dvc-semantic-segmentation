@@ -1,4 +1,20 @@
 train:
   hyperparameters:
     learning_rate: 0.0001
-    
+    image_longest_dimension: 512 # pixels
+    batch_size: 1
+    num_workers: 1
+    encoder_name: "timm-efficientnet-b8"
+    encoder_weights: "imagenet"
+    in_channels: 3
+    classes: 1
+    loss_smoothing: 8 # Divide 32 by batch_size
+  loss:
+    Jaccard:
+      mode: "binary"
+      from_logits: False
+test:
+  hyperparameters:
+    image_longest_dimension: 512 # pixels
+    batch_size: 4
+    num_workers: 1

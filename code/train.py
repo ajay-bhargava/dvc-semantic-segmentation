@@ -1,17 +1,9 @@
 # Torch Imports
 import torch
-from torch.utils.data import DataLoader
-
-# Model Libraries
-import segmentation_models_pytorch as smp
 
 # Python Imports
 from pathlib import Path
-from tqdm import tqdm
 from argparse import ArgumentParser, Namespace
-
-# Dataset Libraries
-from loaders.dataset import IIITPetDataset
 
 # Miscellaneous Libraries
 from log.logger import LOGGER
@@ -35,15 +27,6 @@ def train_model(
   '''
 
 
-
-
-
-
-
-
-
-
-
 if __name__ == "__main__":
   # Parse Arguments
   arguments = parse_command_options()
@@ -56,5 +39,5 @@ if __name__ == "__main__":
   LOGGER.info("Using {}".format(str(device).upper()))
 
   # Load the configuration file
-  CONFIG = CONFIGURATOR(arguments.config)
+  CONFIG = CONFIGURATOR(arguments.config, arguments.dataset, device)
   
