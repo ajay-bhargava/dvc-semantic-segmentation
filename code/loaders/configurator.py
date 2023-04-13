@@ -12,6 +12,13 @@ class CONFIGURATOR(object):
     self.device = device
     with open(self.path, 'r') as f:
       self.dictionary = yaml.safe_load(f)
-
+    self.class_map = self.retrieve('test.hyperparameters.classes')
+    
   def retrieve(self, keys, default=None):
       return reduce(lambda d, key: d.get(key, default) if isinstance(d, dict) else default, keys.split("."), self.dictionary)
+    
+  def get_classes(self) -> list:
+    return [{"name": x, "id": y} for x, y in self.class_map.items()]
+  
+  def get_class_labels(self):
+    return {value: key for key, value in self.class_map.items()}

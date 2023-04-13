@@ -16,5 +16,8 @@ train:
 test:
   hyperparameters:
     image_longest_dimension: 512 # pixels
-    batch_size: 4
+    batch_size: 2
     num_workers: 1
+    classes: # Classes and their corresponding identity number. 0 is background.
+      background: 0
+      pets: 1

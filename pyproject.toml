@@ -23,6 +23,7 @@ scikit-image = "^0.20.0"
 albumentations = "^1.3.0"
 iprogress = "^0.4"
 ipywidgets = "^8.0.4"
+wandb = "^0.14.2"
 
 [tool.poetry.group.dev.dependencies]
 notebook = "^6.5.2"

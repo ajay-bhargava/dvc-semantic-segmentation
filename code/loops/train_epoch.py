@@ -4,14 +4,14 @@ from tqdm import tqdm
 from utils.loss import Criterion
 from log.logger import LOGGER
 
-def _do_an_epoch(
-        configuration, 
-        model: torch.nn.Module,
-        optimizer: torch.optim.Optimizer,
-        scheduler: torch.optim.lr_scheduler._LRScheduler,
-        dataloader: DataLoader,
-        device,
-        epoch: int,
+def _train_an_epoch(
+  configuration, 
+  model: torch.nn.Module,
+  optimizer: torch.optim.Optimizer,
+  scheduler: torch.optim.lr_scheduler._LRScheduler,
+  dataloader: DataLoader,
+  device,
+  epoch: int,
 ) -> float:
   '''
   Docstring for _do_an_epoch()

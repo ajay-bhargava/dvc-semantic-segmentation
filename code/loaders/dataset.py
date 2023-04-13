@@ -2,7 +2,6 @@ from torch.utils.data import Dataset
 from pathlib import Path
 from PIL import Image
 import numpy as np
-from skimage import transform
 from log.logger import LOGGER
 import cv2
 
@@ -87,6 +86,9 @@ class IIITPetDataset(Dataset):
 
     impath, numpath = self.paths[index], self.paths[index].with_suffix('.npy')
     image, mask = np.asarray(Image.open(impath)), np.load(numpath)
+    
+    # Normalize the mask to [0, 1]
+    mask = mask / np.max(mask)
     
     # Call Transformations
     image, mask = self.albumentations(image, mask)
