@@ -1,0 +1,5 @@
+code/**/*.pyc
+__pycache__
+.cpython-310.pyc
+code/log/__pycache__/logger.cpython-310.pyc
+code/loaders/__pycache__/configurator.cpython-310.pyc
