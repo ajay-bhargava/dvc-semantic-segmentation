@@ -1,0 +1,17 @@
+name: minimal-pytorch
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+dependencies:
+  - mamba
+  - python=3.10.*
+  - pip
+  - poetry
+  - pytorch
+  - torchvision
+  - torchaudio
+  - pytorch-cuda=11.8
+
+# Notes: 
+# - install mamba, then install poetry packages, then install dvc[s3]
