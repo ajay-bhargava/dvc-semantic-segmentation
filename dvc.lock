@@ -5,8 +5,8 @@ stages:
       --output data/computed/pets-dataset/
     deps:
     - path: code/compute_task_data.py
-      md5: e3d78d5dd90d144a59c0040bb22a095c
-      size: 2209
+      md5: aab422f14710e9c9cd899f86a3eacc5b
+      size: 2220
     - path: data/labelstudio-pets-dataset.json
       md5: 296e963694f5a7cd63b97fccb7ec601b
       size: 89956236
