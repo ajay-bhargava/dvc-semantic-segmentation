@@ -8,7 +8,7 @@ def set_logger(name = None):
   log.setLevel(logging.INFO)
   handler = logging.StreamHandler()
   handler.setLevel(logging.INFO)
-  handler.setFormatter(logging.Formatter('\n [%(levelname)s] %(message)s'))
+  handler.setFormatter(logging.Formatter('\n[%(levelname)s] %(message)s'))
   log.addHandler(handler)
 
 set_logger()

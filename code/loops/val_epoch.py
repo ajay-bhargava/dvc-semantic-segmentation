@@ -32,8 +32,7 @@ def _validate_an_epoch(
   # Validation Metrics Storage
   TRUTHS = []
   PREDICTIONS = []
-  VALIDATION_SCORES = []
-  EPOCH_LOSS = 0
+  epoch_loss = 0
       
   
   # Initialize wandb.Classes()
@@ -44,7 +43,7 @@ def _validate_an_epoch(
   # Loop
   with tqdm(dataloader, 
           total=len(dataloader), 
-          desc = ''.join(['Validation Epoch ', str(epoch)]), 
+          desc = ''.join([' [INFO] Validation Epoch ', str(epoch)]), 
           dynamic_ncols = True, 
           leave = False) as pbar:
     try:
@@ -59,16 +58,17 @@ def _validate_an_epoch(
         # Batch Size
         batch_size = images.shape[0]
         
-        # Run a prediction
-        prediction = model(images)
-        loss = criterion(prediction, masks)
-        
-        # Update Dataset Iterated
-        running_loss += (loss.item() * batch_size)
-        dataset_size += batch_size
+        with torch.no_grad():
+          # Run a prediction
+          prediction = model(images)
+          loss = criterion(prediction, masks)
+          
+          # Update Dataset Iterated
+          running_loss += (loss.item() * batch_size)
+          dataset_size += batch_size
         
         # Calculate epoch loss
-        EPOCH_LOSS = running_loss / dataset_size
+        epoch_loss = running_loss / dataset_size
         
         # Update memory usage
         mem = f'{torch.cuda.memory_reserved() / 1E9 if torch.cuda.is_available() else 0:.3g}G'  # (GB)
@@ -76,7 +76,7 @@ def _validate_an_epoch(
         # Update the progress bar
         pbar.set_postfix(
           gpu_memory = mem,
-          loss = f'{EPOCH_LOSS:0.4f}',
+          loss = f'{epoch_loss:0.4f}',
         )
         
         # Perform a nn.Sigmoid() on the prediction to convert to a probability
@@ -86,22 +86,30 @@ def _validate_an_epoch(
         
         if (STEP_COUNTER % math.floor(len(dataloader) / 10)) == 0 or test:          
           for x in range(0, prediction.shape[0]):
+            
             prediction_logging = wandb.Image(
               data_or_path = images[x,...].permute(1,2,0).detach().cpu().numpy(), 
               masks = {
                 "predictions": {
                   "mask_data": (prediction[x,...] > 0.5).long().squeeze().detach().cpu().numpy(), 
                   "class_label": configuration.get_class_labels()
-                  },
-                
-                "ground_truth": {
-                  "mask_data": masks[x,...].long().detach().cpu().numpy(),
-                  "class_label": configuration.get_class_labels()
-                }
+                  }
               },
               classes = class_set,
             )
-            wandb_table.add_data(prediction_logging)
+            
+            truth_logging = wandb.Image(
+              data_or_path = images[x,...].permute(1,2,0).detach().cpu().numpy(),
+              masks = {
+                  "ground_truth": {
+                  "mask_data": masks[x,...].long().detach().cpu().numpy(),
+                  "class_label": configuration.get_class_labels()
+                  }
+              },
+              classes = class_set,
+            )
+            
+            wandb_table.add_data(truth_logging, prediction_logging)
           LOGGER.info('Logging validation pair to wandb.Table ✨')
           
         if test:
@@ -114,11 +122,11 @@ def _validate_an_epoch(
       # Calculate Loss for this Validation Epoch
       jaccard = 1. - JaccardLoss(mode = 'binary', from_logits = False)(PREDICTIONS, TRUTHS).detach().cpu().numpy()
       dice = 1. - DiceLoss(mode = 'binary', from_logits = False)(PREDICTIONS, TRUTHS).detach().cpu().numpy()
-      VALIDATION_SCORES.append({"Dice": dice, "Jaccard": jaccard})
+      VALIDATION_SCORES = {"Dice": dice, "Jaccard": jaccard} 
 
-      return EPOCH_LOSS, VALIDATION_SCORES
+      return epoch_loss, VALIDATION_SCORES
         
     except KeyboardInterrupt:
-      LOGGER.error('Keyboard Interrupt. Exiting...')
-      return EPOCH_LOSS, [{"Dice": None, "Jaccard": None}]
+      LOGGER.error('Keyboard Interrupt. Exiting Validation Loop.')
+      return epoch_loss, {"Dice": 0, "Jaccard": 0}
     

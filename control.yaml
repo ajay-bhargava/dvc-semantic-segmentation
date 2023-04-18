@@ -1,5 +1,9 @@
 train:
+  project_name: "IIITPetsDataset"
   hyperparameters:
+    epochs: 2
+    patience: 5
+    delta: 0.01
     learning_rate: 0.0001
     image_longest_dimension: 512 # pixels
     batch_size: 1

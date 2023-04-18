@@ -12,12 +12,12 @@ def _train_an_epoch(
   dataloader: DataLoader,
   device,
   epoch: int,
+  test: bool = False,
 ) -> float:
   '''
-  Docstring for _do_an_epoch()
+  Docstring for _train_an_epoch()
   '''
   model.train()
-  
   # Enable mixed precision 
   scaler = torch.cuda.amp.GradScaler(enabled = configuration.retrieve('train.hyperparameters.mixed_precision'))
   
@@ -32,7 +32,7 @@ def _train_an_epoch(
   # Training Loop
   with tqdm(dataloader, 
             total=len(dataloader), 
-            desc = ''.join(['Epoch ', str(epoch)]), 
+            desc = ''.join([' [INFO] Epoch ', str(epoch)]), 
             dynamic_ncols = True, 
             leave = False) as pbar:
     try:
@@ -49,7 +49,7 @@ def _train_an_epoch(
           prediction = model(images)
           loss = criterion(prediction, masks)
           loss = loss / configuration.retrieve('train.hyperparameters.loss_smoothing') # Scaling will affect the trade-off between prediction loss and regularization
-          
+
         # BackPropagation 
         scaler.scale(loss).backward() # type: ignore
         
@@ -78,13 +78,19 @@ def _train_an_epoch(
           lr = optimizer.param_groups[0]['lr'],
           loss = f'{epoch_loss:0.4f}',
         )
-        torch.cuda.empty_cache()
+        
+        if device == 'cuda':
+          torch.cuda.empty_cache()
+        
+        if test:
+          break
       
       return epoch_loss
     
     except KeyboardInterrupt:
-      torch.cuda.empty_cache()
-      LOGGER.error('Keyboard Interrupt. Exiting...')
+      if device == 'cuda':
+        torch.cuda.empty_cache()
+      LOGGER.error('Keyboard Interrupt. Exiting Training Loop.')
       return epoch_loss
       
     
