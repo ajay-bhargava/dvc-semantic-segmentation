@@ -10,7 +10,6 @@ packages = [{include = "dvc_semantic_segmentation"}]
 python = ">=3.10,<3.12"
 torch = "1.13.1"
 scipy = "^1.10.0"
-dvc = {extras = ["s3"], version = "^2.41.1"}
 torchvision = "^0.14.1"
 ipykernel = "^6.20.1"
 ipython = "^8.8.0"
