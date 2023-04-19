@@ -14,13 +14,20 @@ class Albumentations:
     self.transform = None
     try:
       import albumentations as A
-      from albumentations.pytorch import ToTensorV2
+      from albumentations.pytorch.transforms import ToTensorV2
 
       if mode == "train":
       
         T = [
-          A.LongestMaxSize(max_size = longest_dimension, always_apply = True),
-          A.PadIfNeeded(min_height = longest_dimension, min_width = longest_dimension, border_mode = cv2.BORDER_CONSTANT, value = [0,0,0], mask_value= [0, 0, 0], always_apply = True),
+          A.LongestMaxSize(max_size = longest_dimension, 
+                           always_apply = True),
+          A.PadIfNeeded(min_height = longest_dimension, 
+                        min_width = longest_dimension, 
+                        border_mode = cv2.BORDER_CONSTANT, 
+                        value = [0,0,0], 
+                        mask_value= [0, 0, 0], 
+                        always_apply = True),
+          A.CoarseDropout(p=1.0, max_holes=128, max_height=8, max_width=8, min_holes=128, min_height=8, min_width=8, fill_value=0, mask_fill_value=None),
           A.ShiftScaleRotate(
             shift_limit = 0.2,
             scale_limit = 0.2,
@@ -34,7 +41,8 @@ class Albumentations:
           ),
           A.Normalize(
             mean = [0.485, 0.456, 0.406],
-            std = [0.229, 0.224, 0.225]
+            std = [0.229, 0.224, 0.225],
+            always_apply = True
           ),
           ToTensorV2()
         ]
@@ -43,11 +51,18 @@ class Albumentations:
       elif mode == "test":
       
         T = [
-          A.LongestMaxSize(max_size = longest_dimension, always_apply = True),
-          A.PadIfNeeded(min_height = longest_dimension, min_width = longest_dimension, border_mode = cv2.BORDER_CONSTANT, value = [0,0,0], mask_value= [0, 0, 0], always_apply = True),
+          A.LongestMaxSize(max_size = longest_dimension, 
+                           always_apply = True),
+          A.PadIfNeeded(min_height = longest_dimension, 
+                        min_width = longest_dimension, 
+                        border_mode = cv2.BORDER_CONSTANT, 
+                        value = [0,0,0], 
+                        mask_value= [0, 0, 0], 
+                        always_apply = True),
           A.Normalize(
             mean = [0.485, 0.456, 0.406],
-            std = [0.229, 0.224, 0.225]
+            std = [0.229, 0.224, 0.225],
+            always_apply = True
           ),
           ToTensorV2()
         ]
@@ -87,8 +102,8 @@ class IIITPetDataset(Dataset):
     impath, numpath = self.paths[index], self.paths[index].with_suffix('.npy')
     image, mask = np.asarray(Image.open(impath)), np.load(numpath)
     
-    # Normalize the mask to [0, 1]
-    mask = mask / np.max(mask)
+    # Normalize the mask
+    mask = mask / 255
     
     # Call Transformations
     image, mask = self.albumentations(image, mask)

@@ -1,18 +1,19 @@
 train:
   project_name: "IIITPetsDataset"
   hyperparameters:
-    epochs: 2
+    epochs: 10
     patience: 5
     delta: 0.01
     learning_rate: 0.0001
     image_longest_dimension: 512 # pixels
-    batch_size: 1
-    num_workers: 1
+    batch_size: 4
+    num_workers: 2
     encoder_name: "timm-efficientnet-b8"
     encoder_weights: "imagenet"
     in_channels: 3
     classes: 1
     loss_smoothing: 2 # Divide 32 by batch_size
+    mixed_precision: True
   loss:
     Jaccard:
       mode: "binary"

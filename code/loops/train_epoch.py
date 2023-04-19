@@ -48,7 +48,6 @@ def _train_an_epoch(
         with torch.autocast(device_type = device):
           prediction = model(images)
           loss = criterion(prediction, masks)
-          loss = loss / configuration.retrieve('train.hyperparameters.loss_smoothing') # Scaling will affect the trade-off between prediction loss and regularization
 
         # BackPropagation 
         scaler.scale(loss).backward() # type: ignore

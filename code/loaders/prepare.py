@@ -13,7 +13,8 @@ def prepare_loaders(configuration, fold: int = 1):
   training_loader = DataLoader(
     training_dataset, 
     batch_size = configuration.retrieve('train.hyperparameters.batch_size'),
-    num_workers = configuration.retrieve('train.hyperparameters.num_workers')
+    num_workers = configuration.retrieve('train.hyperparameters.num_workers'),
+    shuffle=True,
   )
 
   testing_loader = DataLoader(

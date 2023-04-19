@@ -16,8 +16,8 @@ def parse_command_options() -> Namespace:
   Creates an ArgumentParser object that contains all the arguments for running the script.
   '''
   parser = ArgumentParser(description='Train the UNet on images and target masks')
-  parser.add_argument('--config', '-c', metavar='C', type=str, default='train.yaml', help='Path to the configuration file')
-  parser.add_argument('--dataset', '-d', metavar='D', type=str, default='data/computed/pets-dataset/train', help='Path to the dataset')
+  parser.add_argument('--config', '-c', metavar='C', type=str, default='control.yaml', help='Path to the configuration file')
+  parser.add_argument('--dataset', '-d', metavar='D', type=str, default='data/computed/pets-dataset', help='Path to the dataset')
   arguments = parser.parse_args()
   return arguments
 
@@ -65,5 +65,7 @@ if __name__ == "__main__":
   
   # Train the model
   train(configuration)
-  os.remove('../wandb/')
+  if os.path.exists('../wandb/'):
+    os.remove('../wandb/')
+  LOGGER.info("🎉 Exiting.")
   
