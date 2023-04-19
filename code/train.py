@@ -37,7 +37,7 @@ def train(
   optimizer = torch.optim.Adam(model.parameters(), 
                                lr = configuration.retrieve('train.hyperparameters.learning_rate'))
   scheduler = torch.optim.lr_scheduler.ExponentialLR(optimizer,
-                                                     gamma = 0.85)
+                                                     gamma = 0.25)
   trained_model = run_loops(configuration, 
                             optimizer, 
                             scheduler, 

@@ -91,7 +91,7 @@ def run_loops(
         run.summary['val/best_jaccard'] = best_jaccard_score
         run.summary['train/best_epoch'] = best_epoch
         best_weights = copy.deepcopy(model.state_dict())
-        BEST_SAVE_PATH = './models/{}_best_model.pth'.format(configuration.retrieve('train.project_name'))
+        BEST_SAVE_PATH = './models/best_model.pth'
         torch.save(model.state_dict(), BEST_SAVE_PATH)
         LOGGER.info('Model Saved.')
         run.save(BEST_SAVE_PATH)
@@ -108,7 +108,7 @@ def run_loops(
         pass
       
       latest_epoch_weights = copy.deepcopy(model.state_dict())
-      LATEST_SAVE_PATH = './models/{}_latest_model.pth'.format(configuration.retrieve('train.project_name'))
+      LATEST_SAVE_PATH = './models/latest_model.pth'
       torch.save(model.state_dict(), LATEST_SAVE_PATH)
       
     end = time.time()

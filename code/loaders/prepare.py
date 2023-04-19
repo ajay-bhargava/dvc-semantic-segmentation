@@ -20,7 +20,8 @@ def prepare_loaders(configuration, fold: int = 1):
   testing_loader = DataLoader(
     testing_dataset, 
     batch_size = configuration.retrieve('test.hyperparameters.batch_size'),
-    num_workers = configuration.retrieve('test.hyperparameters.num_workers')
+    num_workers = configuration.retrieve('test.hyperparameters.num_workers'),
+    shuffle = True,
   )
 
   return training_loader, testing_loader

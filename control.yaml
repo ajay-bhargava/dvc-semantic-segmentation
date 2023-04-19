@@ -1,10 +1,10 @@
 train:
   project_name: "IIITPetsDataset"
   hyperparameters:
-    epochs: 10
+    epochs: 1
     patience: 5
     delta: 0.01
-    learning_rate: 0.0001
+    learning_rate: 0.001
     image_longest_dimension: 512 # pixels
     batch_size: 4
     num_workers: 2
@@ -12,12 +12,12 @@ train:
     encoder_weights: "imagenet"
     in_channels: 3
     classes: 1
-    loss_smoothing: 2 # Divide 32 by batch_size
+    loss_smoothing: 4
     mixed_precision: True
   loss:
     Jaccard:
       mode: "binary"
-      from_logits: False
+      from_logits: True
 test:
   hyperparameters:
     image_longest_dimension: 512 # pixels

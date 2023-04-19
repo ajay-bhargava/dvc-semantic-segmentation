@@ -25,6 +25,7 @@ def _train_an_epoch(
   dataset_size = 0
   running_loss = 0.0
   epoch_loss = 0.0
+  counter = 0
   
   # Initialize loss function
   criterion = Criterion(configuration)
@@ -46,20 +47,21 @@ def _train_an_epoch(
 
         # Forward Pass (Mixed Precision - FP16 or Lower)
         with torch.autocast(device_type = device):
-          prediction = model(images)
+          prediction = model(images)  
           loss = criterion(prediction, masks)
 
         # BackPropagation 
         scaler.scale(loss).backward() # type: ignore
+
         
-        if dataset_size % configuration.retrieve('train.hyperparameters.loss_smoothing') == 0:
-          # Step the optimizer and update the learning rate in a more smoothed way. 
+        if dataset_size % (len(dataloader) / 16) == 0:
+          # Gradient Scaling
           scaler.step(optimizer)
           scaler.update()
-        
-          optimizer.zero_grad()
           
-          # Update the learning rate based on the scheduler. 
+          optimizer.zero_grad() 
+          
+          # Update Scheduler. 
           if scheduler is not None:
             scheduler.step()
           
