@@ -32,7 +32,7 @@ def _train_an_epoch(
   # Training Loop
   with tqdm(dataloader, 
             total=len(dataloader), 
-            desc = ''.join([' [INFO] Epoch ', str(epoch)]), 
+            desc = ''.join(['[INFO] Epoch ', str(epoch)]), 
             dynamic_ncols = True, 
             leave = False) as pbar:
     try:

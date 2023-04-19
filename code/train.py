@@ -55,7 +55,10 @@ if __name__ == "__main__":
 
   # Log the device
   LOGGER.info("🤖 Welcome to UNet.")
-  LOGGER.info("Using {}".format(str(device).upper()))
+  if device != "cuda":
+    LOGGER.warning("🔥 No GPU detected. Training will be slow.")
+  else:
+    LOGGER.info("🔥 GPU detected. Training using {}.".format(torch.cuda.get_device_name(torch.device("cuda"))))
 
   # Load the configuration file
   configuration = CONFIGURATOR(arguments.config, arguments.dataset, device)

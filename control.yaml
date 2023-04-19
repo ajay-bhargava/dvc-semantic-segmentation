@@ -12,7 +12,7 @@ train:
     encoder_weights: "imagenet"
     in_channels: 3
     classes: 1
-    loss_smoothing: 8 # Divide 32 by batch_size
+    loss_smoothing: 2 # Divide 32 by batch_size
   loss:
     Jaccard:
       mode: "binary"

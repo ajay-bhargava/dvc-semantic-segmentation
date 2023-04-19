@@ -43,7 +43,7 @@ def _validate_an_epoch(
   # Loop
   with tqdm(dataloader, 
           total=len(dataloader), 
-          desc = ''.join([' [INFO] Validation Epoch ', str(epoch)]), 
+          desc = ''.join(['[INFO] Validation Epoch ', str(epoch)]), 
           dynamic_ncols = True, 
           leave = False) as pbar:
     try:

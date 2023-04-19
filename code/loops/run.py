@@ -1,4 +1,5 @@
 import torch, wandb, time, copy, numpy as np
+from pathlib import Path
 from log.logger import LOGGER
 from loops.train_epoch import _train_an_epoch
 from loops.val_epoch import _validate_an_epoch
@@ -31,6 +32,9 @@ def run_loops(
   
   # Load the Dataset 🪨
   train_loader, val_loader = prepare_loaders(configuration)
+  
+  # Create Folder for Saving Models
+  Path('./models').mkdir(parents = True, exist_ok = True)
   
   # Start the loop
   try:
