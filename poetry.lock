@@ -1199,14 +1199,14 @@ pgp = ["gpg"]
 
 [[package]]
 name = "dvc"
-version = "2.54.0"
+version = "2.55.0"
 description = "Git for data scientists - manage your code and data together"
 category = "main"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "dvc-2.54.0-py3-none-any.whl", hash = "sha256:776946f94b8b96b4f9c09259c4f07111ed5e94fff05e365d4e0a0fb5d6d9ad09"},
-    {file = "dvc-2.54.0.tar.gz", hash = "sha256:aec4ecdd5025f61a63001319975b30f22d2bfa8861cf723ea0636fad901ef934"},
+    {file = "dvc-2.55.0-py3-none-any.whl", hash = "sha256:9230784107633d1e4161824136625aeb233b55a374b214cdab44e049b9a7b95b"},
+    {file = "dvc-2.55.0.tar.gz", hash = "sha256:3ee239ae1e946fe1ac8999fc829ccb570e03c248938e5b8235f5647cf1dce806"},
 ]
 
 [package.dependencies]
@@ -1217,7 +1217,7 @@ dpath = ">=2.1.0,<3"
 dvc-data = ">=0.47.1,<0.48"
 dvc-http = ">=2.29.0"
 dvc-render = ">=0.3.1,<0.4.0"
-dvc-s3 = {version = "2.21", optional = true, markers = "extra == \"s3\""}
+dvc-s3 = {version = "2.22.0", optional = true, markers = "extra == \"s3\""}
 dvc-studio-client = ">=0.6.1,<1"
 dvc-task = ">=0.2.0,<1"
 flatten-dict = ">=0.4.1,<1"
@@ -1250,12 +1250,12 @@ voluptuous = ">=0.11.7"
 all = ["dvc[azure,gdrive,gs,hdfs,oss,s3,ssh,webdav,webhdfs]"]
 azure = ["dvc-azure (==2.21.1)"]
 dev = ["dvc[azure,gdrive,gs,hdfs,lint,oss,s3,ssh,terraform,tests,webdav,webhdfs]"]
-gdrive = ["dvc-gdrive (==2.19.1)"]
+gdrive = ["dvc-gdrive (==2.19.2)"]
 gs = ["dvc-gs (==2.22.0)"]
 hdfs = ["dvc-hdfs (==2.19)"]
 lint = ["mypy (==1.2.0)", "pylint (==2.17.2)", "types-colorama", "types-psutil", "types-requests", "types-tabulate", "types-toml", "types-tqdm"]
 oss = ["dvc-oss (==2.19)"]
-s3 = ["dvc-s3 (==2.21)"]
+s3 = ["dvc-s3 (==2.22.0)"]
 ssh = ["dvc-ssh (>=2.22.1,<3)"]
 ssh-gssapi = ["dvc-ssh[gssapi] (>=2.22.1,<3)"]
 terraform = ["tpi[ssh] (>=2.1)"]
@@ -1357,14 +1357,14 @@ tests = ["funcy (>=1.17)", "matplotlib", "mypy (==0.981)", "pylint (==2.15.0)", 
 
 [[package]]
 name = "dvc-s3"
-version = "2.21.0"
+version = "2.22.0"
 description = "s3 plugin for dvc"
 category = "main"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "dvc-s3-2.21.0.tar.gz", hash = "sha256:004079372a7a8fb997d00380d2b85e81de2af313ff3cec7d27aca7d4fa6ed279"},
-    {file = "dvc_s3-2.21.0-py3-none-any.whl", hash = "sha256:98163f09f5ea77369eae28c234b753e98c355bd5a0bcb7475f412abe63650059"},
+    {file = "dvc-s3-2.22.0.tar.gz", hash = "sha256:d7d8ff243f0a64440a6a3e791d812e707c21fcb509fbcf0f3c512a016a2fd868"},
+    {file = "dvc_s3-2.22.0-py3-none-any.whl", hash = "sha256:460dbf0090bd5cfe10a30c5fb28dc75a09ba66519fd71ebaf528dcda25e032d8"},
 ]
 
 [package.dependencies]
@@ -1374,7 +1374,7 @@ flatten-dict = ">=0.4.1,<1"
 s3fs = ">=2022.02.0"
 
 [package.extras]
-tests = ["Pygments (==2.10.0)", "collective.checkdocs (==0.2)", "dvc[testing]", "filelock (==3.3.2)", "flaky (==3.7.0)", "mock (==4.0.3)", "mypy (==0.910)", "pydocstyle (==6.1.1)", "pylint (==2.11.1)", "pylint-plugin-utils (==0.6)", "pylint-pytest (==1.1.2)", "pytest (==6.2.5)", "pytest-cov (==3.0.0)", "pytest-docker (==0.10.3)", "pytest-lazy-fixture (==0.6.3)", "pytest-mock (==3.6.1)", "pytest-xdist (==2.4.0)", "pywin32 (>=225)", "types-requests (==2.25.11)", "types-tabulate (==0.8.3)", "types-toml (==0.10.1)", "wget (==3.2)", "wheel (==0.37.0)", "xmltodict (==0.12.0)"]
+tests = ["Pygments (==2.10.0)", "collective.checkdocs (==0.2)", "dvc[testing]", "filelock (==3.3.2)", "flaky (==3.7.0)", "mock (==4.0.3)", "mypy (==0.991)", "pydocstyle (==6.1.1)", "pylint (==2.15.9)", "pylint-plugin-utils (==0.6)", "pytest (==6.2.5)", "pytest-cov (==3.0.0)", "pytest-docker (==0.10.3)", "pytest-lazy-fixture (==0.6.3)", "pytest-mock (==3.6.1)", "pytest-servers[s3] (==0.2.0)", "pytest-xdist (==2.4.0)", "pywin32 (>=225)", "types-requests (==2.25.11)", "types-tabulate (==0.8.3)", "types-toml (==0.10.1)", "wget (==3.2)", "wheel (==0.37.0)", "xmltodict (==0.12.0)"]
 
 [[package]]
 name = "dvc-studio-client"
