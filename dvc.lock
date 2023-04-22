@@ -22,8 +22,8 @@ stages:
       md5: 25050a3a6d2d74f98248fbe08ad7f7a3
       size: 650
     - path: code/train.py
-      md5: 59b35967b1e7180ad33fc09fa5df37db
-      size: 2382
+      md5: 737a412a47bad4029fdf5b7d1cbd6252
+      size: 2380
     - path: data/computed/pets-dataset/
       md5: 74705f83cc29e888440e4150ecb5249c.dir
       size: 1525937273
