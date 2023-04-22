@@ -23,6 +23,7 @@ iprogress = "^0.4"
 ipywidgets = "^8.0.4"
 wandb = "^0.14.2"
 dvc = "^2.55.0"
+dvc-s3 = "^2.22.0"
 
 [tool.poetry.group.dev.dependencies]
 notebook = "^6.5.2"
