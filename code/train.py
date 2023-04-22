@@ -30,7 +30,7 @@ def train(
   run = wandb.init(
     project = ''.format(configuration.retrieve('train.project_name')),
     config = configuration.dictionary,
-    mode = 'disabled',
+    mode = 'online',
     anonymous = 'must'
   )
   model = create_model(configuration)

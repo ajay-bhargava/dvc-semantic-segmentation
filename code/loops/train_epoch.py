@@ -53,8 +53,7 @@ def _train_an_epoch(
         # BackPropagation 
         scaler.scale(loss).backward() # type: ignore
 
-        
-        if dataset_size % (len(dataloader) / 16) == 0:
+        if dataset_size % (len(dataloader) // 2) == 0:
           # Gradient Scaling
           scaler.step(optimizer)
           scaler.update()

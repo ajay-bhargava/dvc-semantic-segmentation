@@ -66,13 +66,14 @@ def run_loops(
       
       # Submit Logging to Weight & Biases ✨
       wandb.log(
-        {
+        data = {
           'train/loss': train_loss,
           'val/loss': validation_loss,
           'val/dice': dice,
           'val/jaccard': jaccard,
           'val/table': table,
-        }
+        }, 
+        step = epoch
       )
       
       LOGGER.info('Epoch {} of {} complete. Validation Loss: {:.3f} | Validation Dice: {:.3f} | Validation Jaccard: {:.3f}'.format(epoch, 

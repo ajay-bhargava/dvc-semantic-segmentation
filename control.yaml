@@ -1,7 +1,7 @@
 train:
   project_name: "IIITPetsDataset"
   hyperparameters:
-    epochs: 1
+    epochs: 3
     patience: 5
     delta: 0.01
     learning_rate: 0.001
