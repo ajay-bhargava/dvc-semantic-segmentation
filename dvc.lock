@@ -19,19 +19,19 @@ stages:
     cmd: python3 code/train.py --dataset data/computed/pets-dataset/ --config ./control.yaml
     deps:
     - path: ./control.yaml
-      md5: 55333d976fd412bd1e79f06afd08b78f
+      md5: 7f762b31e8c7f1c34d8396af913cecc0
       size: 649
     - path: code/train.py
-      md5: 59b35967b1e7180ad33fc09fa5df37db
-      size: 2382
+      md5: 737a412a47bad4029fdf5b7d1cbd6252
+      size: 2380
     - path: data/computed/pets-dataset/
       md5: 74705f83cc29e888440e4150ecb5249c.dir
       size: 1525937273
       nfiles: 14780
     outs:
     - path: models/best_model.pth
-      md5: 805a3d24c8be4eb2ef2a4392a0b004e8
+      md5: 98040ce43915d463b9d63abc5edac1ae
       size: 354529343
     - path: models/latest_model.pth
-      md5: 8c65f986a1664bebf981a9b9e44dcdc6
+      md5: 78710121f4c02179ac554c5feda1c5a6
       size: 354532131
