@@ -84,7 +84,7 @@ def _validate_an_epoch(
         TRUTHS.append(masks)
         STEP_COUNTER += batch_size
         
-        if (STEP_COUNTER % math.floor(len(dataloader) / 25)) == 0 or test:          
+        if (STEP_COUNTER % math.floor(len(dataloader) // 25)) == 0 or test:          
           for x in range(0, prediction.shape[0]):
             
             prediction_logging = wandb.Image(

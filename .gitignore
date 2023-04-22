@@ -1,5 +1,11 @@
+# Python Garbage
 code/**/*.pyc
 __pycache__
 *.cpython-310.pyc
 **/**.cpython-310*.*pyc
+
+# Models
 *.pth
+
+# Weights and Biases
+wandb/
