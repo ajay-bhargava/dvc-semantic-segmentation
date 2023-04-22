@@ -8,3 +8,15 @@ stages:
     outs:
     - data/computed/pets-dataset/:
         cache: false
+  train:
+    desc: This stage of the pipeline trains the model.
+    cmd: python3 code/train.py --dataset data/computed/pets-dataset/ --config ./control.yaml
+    deps:
+    - code/train.py
+    - data/computed/pets-dataset/
+    - ./control.yaml
+    outs:
+    - models/best_model.pth:
+        cache: True
+    - models/latest_model.pth:
+        cache: True

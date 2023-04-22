@@ -3,7 +3,6 @@ import torch, os
 import wandb
 
 # Python Imports
-from pathlib import Path
 from argparse import ArgumentParser, Namespace
 
 # Created Libraries
@@ -17,8 +16,8 @@ def parse_command_options() -> Namespace:
   Creates an ArgumentParser object that contains all the arguments for running the script.
   '''
   parser = ArgumentParser(description='Train the UNet on images and target masks')
-  parser.add_argument('--config', '-c', metavar='C', type=str, default='train.yaml', help='Path to the configuration file')
-  parser.add_argument('--dataset', '-d', metavar='D', type=str, default='data/computed/pets-dataset/train', help='Path to the dataset')
+  parser.add_argument('--config', '-c', metavar='C', type=str, default='control.yaml', help='Path to the configuration file')
+  parser.add_argument('--dataset', '-d', metavar='D', type=str, default='data/computed/pets-dataset', help='Path to the dataset')
   arguments = parser.parse_args()
   return arguments
 
@@ -38,7 +37,7 @@ def train(
   optimizer = torch.optim.Adam(model.parameters(), 
                                lr = configuration.retrieve('train.hyperparameters.learning_rate'))
   scheduler = torch.optim.lr_scheduler.ExponentialLR(optimizer,
-                                                     gamma = 0.85)
+                                                     gamma = 0.25)
   trained_model = run_loops(configuration, 
                             optimizer, 
                             scheduler, 
@@ -56,12 +55,17 @@ if __name__ == "__main__":
 
   # Log the device
   LOGGER.info("🤖 Welcome to UNet.")
-  LOGGER.info("Using {}".format(str(device).upper()))
+  if device != "cuda":
+    LOGGER.warning("🔥 No GPU detected. Training will be slow.")
+  else:
+    LOGGER.info("🔥 GPU detected. Training using {}.".format(torch.cuda.get_device_name(torch.device("cuda"))))
 
   # Load the configuration file
   configuration = CONFIGURATOR(arguments.config, arguments.dataset, device)
   
   # Train the model
   train(configuration)
-  os.remove('../wandb/')
+  if os.path.exists('../wandb/'):
+    os.remove('../wandb/')
+  LOGGER.info("🎉 Exiting.")
   

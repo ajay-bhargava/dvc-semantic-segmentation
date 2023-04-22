@@ -1,4 +1,5 @@
 import torch, wandb, time, copy, numpy as np
+from pathlib import Path
 from log.logger import LOGGER
 from loops.train_epoch import _train_an_epoch
 from loops.val_epoch import _validate_an_epoch
@@ -31,6 +32,9 @@ def run_loops(
   
   # Load the Dataset 🪨
   train_loader, val_loader = prepare_loaders(configuration)
+  
+  # Create Folder for Saving Models
+  Path('./models').mkdir(parents = True, exist_ok = True)
   
   # Start the loop
   try:
@@ -87,7 +91,7 @@ def run_loops(
         run.summary['val/best_jaccard'] = best_jaccard_score
         run.summary['train/best_epoch'] = best_epoch
         best_weights = copy.deepcopy(model.state_dict())
-        BEST_SAVE_PATH = './models/{}_best_model.pth'.format(configuration.retrieve('train.project_name'))
+        BEST_SAVE_PATH = './models/best_model.pth'
         torch.save(model.state_dict(), BEST_SAVE_PATH)
         LOGGER.info('Model Saved.')
         run.save(BEST_SAVE_PATH)
@@ -104,7 +108,7 @@ def run_loops(
         pass
       
       latest_epoch_weights = copy.deepcopy(model.state_dict())
-      LATEST_SAVE_PATH = './models/{}_latest_model.pth'.format(configuration.retrieve('train.project_name'))
+      LATEST_SAVE_PATH = './models/latest_model.pth'
       torch.save(model.state_dict(), LATEST_SAVE_PATH)
       
     end = time.time()

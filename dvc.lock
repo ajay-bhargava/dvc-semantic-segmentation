@@ -5,8 +5,8 @@ stages:
       --output data/computed/pets-dataset/
     deps:
     - path: code/compute_task_data.py
-      md5: e3d78d5dd90d144a59c0040bb22a095c
-      size: 2209
+      md5: aab422f14710e9c9cd899f86a3eacc5b
+      size: 2220
     - path: data/labelstudio-pets-dataset.json
       md5: 296e963694f5a7cd63b97fccb7ec601b
       size: 89956236
@@ -15,3 +15,23 @@ stages:
       md5: 74705f83cc29e888440e4150ecb5249c.dir
       size: 1525937273
       nfiles: 14780
+  train:
+    cmd: python3 code/train.py --dataset data/computed/pets-dataset/ --config ./control.yaml
+    deps:
+    - path: ./control.yaml
+      md5: 55333d976fd412bd1e79f06afd08b78f
+      size: 649
+    - path: code/train.py
+      md5: 59b35967b1e7180ad33fc09fa5df37db
+      size: 2382
+    - path: data/computed/pets-dataset/
+      md5: 74705f83cc29e888440e4150ecb5249c.dir
+      size: 1525937273
+      nfiles: 14780
+    outs:
+    - path: models/best_model.pth
+      md5: 805a3d24c8be4eb2ef2a4392a0b004e8
+      size: 354529343
+    - path: models/latest_model.pth
+      md5: 8c65f986a1664bebf981a9b9e44dcdc6
+      size: 354532131
