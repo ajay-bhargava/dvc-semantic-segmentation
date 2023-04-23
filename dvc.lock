@@ -28,10 +28,3 @@ stages:
       md5: 74705f83cc29e888440e4150ecb5249c.dir
       size: 1525937273
       nfiles: 14780
-    outs:
-    - path: models/best_model.pth
-      md5: 805a3d24c8be4eb2ef2a4392a0b004e8
-      size: 354529343
-    - path: models/latest_model.pth
-      md5: 8c65f986a1664bebf981a9b9e44dcdc6
-      size: 354532131
