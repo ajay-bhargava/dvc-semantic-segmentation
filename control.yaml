@@ -5,7 +5,7 @@ train:
     patience: 5
     delta: 0.01
     learning_rate: 0.001
-    image_longest_dimension: 256 # pixels
+    image_longest_dimension: 512 # pixels
     batch_size: 1
     num_workers: 1
     encoder_name: "timm-efficientnet-b8"
@@ -20,9 +20,9 @@ train:
       from_logits: True
 test:
   hyperparameters:
-    image_longest_dimension: 256 # pixels
-    batch_size: 1
-    num_workers: 1
+    image_longest_dimension: 512 # pixels
+    batch_size: 2
+    num_workers: 0
     classes: # Classes and their corresponding identity number. 0 is background.
       background: 0
       pets: 1

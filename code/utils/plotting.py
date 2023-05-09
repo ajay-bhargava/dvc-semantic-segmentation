@@ -42,3 +42,4 @@ def plot_ground_truths(dataloader, num_images=25):
     ax.imshow(grid.permute(1, 2, 0))
     ax.axis('off')
     plt.show(f)
+    
