@@ -4,6 +4,10 @@ import matplotlib.pyplot as plt
 from segmentation_models_pytorch.losses import JaccardLoss, DiceLoss
 from log.logger import LOGGER
 from typing import Tuple
+from pathlib import Path
+from sklearn import metrics
+import math
+import json
 
 def evaluate_selection(
   _image: torch.Tensor,
@@ -47,3 +51,60 @@ def evaluate_selection(
   jaccard = 1. - JaccardLoss(mode = 'binary', from_logits = False)(_prediction_.unsqueeze(0), _mask[random].unsqueeze(0)).detach().cpu().numpy()
   dice = 1. - DiceLoss(mode = 'binary', from_logits = False)(_prediction_.unsqueeze(0), _mask[random].unsqueeze(0)).detach().cpu().numpy()
   return jaccard, dice
+
+
+def generate_roc_data(
+  output: Path,
+  truths: list,
+  estimates: list
+):
+  '''
+  Generate a JSON file for ROC data in the format suitable for DVC 
+  '''
+  
+  fpr, tpr, thresholds = metrics.roc_curve(truths, estimates)
+  nth_point = math.ceil(len(thresholds) / 2000)
+  roc_points = list(zip(fpr, tpr, thresholds))[::nth_point]
+  
+  # Report the ROC in a structured JSON file.
+  roc_file = output / 'roc.json'
+  with open(roc_file, 'w') as file:
+    json.dump(
+      {
+        "roc": [
+          {"fpr": float(f), "tpr": float(t), "threshold": float(th)} for f, t, th in roc_points
+        ]
+      },
+      file,
+      indent = 4
+    )
+    
+  LOGGER.info(f'ROC Data Saved.')
+  return metrics.roc_auc_score(truths, estimates)
+  
+  
+def generate_pr_auc(
+  output: Path,
+  truths: list,
+  estimates: list
+):
+  '''
+  Generate a JSON and return PR AUC score
+  '''
+  precision, recall, thresholds = metrics.precision_recall_curve(truths, estimates)
+  nth_point = math.ceil(len(thresholds) / 2000)
+  pr_points = list(zip(precision, recall, thresholds))[::nth_point]
+  
+  # Report the PR in a structured JSON file.
+  pr_auc_curve = output / 'pr_curve.json'
+  with open(pr_auc_curve, 'w') as file:
+    json.dump(
+      {
+        "pr": [
+          {"precision": float(p), "recall": float(r), "threshold": float(th)} for p, r, th in pr_points
+        ]
+      },
+      file,
+      indent = 4
+    )
+  return metrics.average_precision_score(truths, estimates)

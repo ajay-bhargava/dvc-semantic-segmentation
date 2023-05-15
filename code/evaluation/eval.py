@@ -5,10 +5,8 @@ Outputs:
 1. Example random inference image side
 2. Metrics for that image
 3. Metrics for the entire dataset. 
-
 Metrics include: JaccardLoss, DiceLoss 
-
-Outputs are fed into CML (DVC product) that are then added to a report for a Github Action to Digest. 
+Outputs are fed into DVC reports
 '''
 
 import torch
@@ -18,9 +16,7 @@ from pathlib import Path
 from segmentation_models_pytorch.losses import JaccardLoss, DiceLoss
 from model.reload_model import reload_model
 from loaders.prepare import prepare_loaders
-from evaluation.utilities import evaluate_selection
-from sklearn import metrics
-import math
+from evaluation.utilities import evaluate_selection, generate_roc_data, generate_pr_auc
 from pathlib import Path
 import json
 
@@ -97,27 +93,23 @@ def evaluate_model(
   jaccard = 1. - JaccardLoss(mode = 'binary', from_logits = False)(PREDICTIONS, TRUTHS).detach().cpu().numpy()
   dice = 1. - DiceLoss(mode = 'binary', from_logits = False)(PREDICTIONS, TRUTHS).detach().cpu().numpy()
   
-  # For Dataset ROC, AUC
+  # For Dataset ROC, PR-Curve, AUC
   ground_truth = TRUTHS.cpu().numpy().flatten()
   estimations = ESTIMATIONS.cpu().numpy().flatten()
   
-  precision, recall, thresholds = metrics.precision_recall_curve(ground_truth, estimations)
-  nth_point = math.ceil(len(thresholds) / 2000)
-  pr_points = list(zip(precision, recall, thresholds))[::nth_point]
-
-  # Report the AUC in a structured JSON file. 
-  auc_value = metrics.auc(precision, recall)
-  roc_auc_file = Path('../../metrics/datapoints') / 'roc_auc.json'
-  with open(roc_auc_file, 'w') as file:
-    json.dump(
-      {
-        "prc": [
-          {"precision": p, "recall": r, "threshold": t} for p, r, t in pr_points
-        ]
-      },
-      file,
-      indent = 4
-    )
+  # Output ROC JSON
+  auc_value = generate_roc_data(
+    Path('../metrics/datapoints'),
+    ground_truth,
+    estimations
+  )
+  
+  # Output PR-Curve JSON and PR-AUC
+  prauc_value = generate_pr_auc(
+    Path('../metrics/datapoints'),
+    ground_truth,
+    estimations
+  )
       
   # Generate Structured JSON for all metrics reported
   summary_file = Path('../metrics/datapoints') / 'summary.json'
@@ -132,7 +124,8 @@ def evaluate_model(
           "dataset": {
             "IoU": jaccard,
             "Dice": dice,
-            "AUC": auc_value
+            "ROC_AUC": auc_value,
+            "PR_AUC": prauc_value
           }
         }
       },
@@ -140,4 +133,5 @@ def evaluate_model(
       indent = 4
     )
   
+  LOGGER.info('Finished Model Evaluation.')
   
