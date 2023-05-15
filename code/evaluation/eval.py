@@ -4,9 +4,12 @@ eval.py
 Outputs: 
 1. Example random inference image side
 2. Metrics for that image
-3. Metrics for the entire dataset. 
+3. Metrics for the entire dataset.
+ 
 Metrics include: JaccardLoss, DiceLoss 
 Outputs are fed into DVC reports
+
+This script is ready to be added to a DVC pipeline as a stage.
 '''
 
 import torch
