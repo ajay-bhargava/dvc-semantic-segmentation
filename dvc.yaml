@@ -1,7 +1,8 @@
 stages:
   compute_dataset:
     desc: This stage of the pipeline computes the dataset from a Labelstudio task.
-    cmd: python3 code/compute_task_data.py --dataset data/labelstudio-pets-dataset.json --output data/computed/pets-dataset/
+    cmd: python3 code/compute_task_data.py --dataset data/labelstudio-pets-dataset.json
+      --output data/computed/pets-dataset/
     deps:
     - code/compute_task_data.py
     - data/labelstudio-pets-dataset.json
@@ -17,6 +18,35 @@ stages:
     - ./control.yaml
     outs:
     - models/best_model.pth:
-        cache: True
+        cache: true
     - models/latest_model.pth:
-        cache: True
+        cache: true
+  evaluate_model:
+    desc: This stage of the pipeline evaluates the model.
+    cmd: python3 code/eval.py --dataset data/computed/pets-dataset/ --model models/best_model.pth --config ./control.yaml
+    deps:
+    - ./control.yaml
+    - data/computed/pets-dataset/
+    - models/best_model.pth
+    outs:
+    - metrics/datapoints/pr_curve.json
+    - metrics/datapoints/roc.json
+    metrics:
+    - metrics/datapoints/summary.json
+
+plots:
+  - metrics/datapoints/pr_curve.json:
+      template: simple
+      x: precision
+      y: recall
+      x_label: Precision
+      y_label: Recall
+      title: Precision-Recall Curve
+  - metrics/datapoints/roc.json:
+      template: simple
+      x: fpr
+      y: tpr
+      x_label: False Positive Rate
+      y_label: True Positive Rate
+      title: ROC Curve
+  - metrics/figures/evaluation.png

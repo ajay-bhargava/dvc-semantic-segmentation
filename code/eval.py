@@ -12,7 +12,7 @@ Outputs are fed into DVC reports
 This script is ready to be added to a DVC pipeline as a stage.
 '''
 
-import torch
+import torch, json
 from tqdm import tqdm
 from log.logger import LOGGER
 from pathlib import Path
@@ -20,8 +20,19 @@ from segmentation_models_pytorch.losses import JaccardLoss, DiceLoss
 from model.reload_model import reload_model
 from loaders.prepare import prepare_loaders
 from evaluation.utilities import evaluate_selection, generate_roc_data, generate_pr_auc
-from pathlib import Path
-import json
+from argparse import ArgumentParser, Namespace
+from loaders.configurator import CONFIGURATOR
+
+def parse_command_options() -> Namespace:
+  '''
+  Creates an ArgumentParser object that contains all the arguments for running the script.
+  '''
+  parser = ArgumentParser(description='Train the UNet on images and target masks')
+  parser.add_argument('--config', '-c', metavar='C', type=str, default='control.yaml', help='Path to the configuration file')
+  parser.add_argument('--model', '-m', metavar='M', type=str, default='models/best_model.pth', help='Path to the model')
+  parser.add_argument('--dataset', '-d', metavar='D', type=str, default='data/computed/pets-dataset', help='Path to the dataset')
+  arguments = parser.parse_args()
+  return arguments
 
 def evaluate_model(
   configuration,
@@ -34,8 +45,8 @@ def evaluate_model(
   '''
   
   # Create Output Paths
-  Path('../../metrics/datapoints').mkdir(parents = True, exist_ok = True)
-  Path('../../metrics/figures').mkdir(parents = True, exist_ok = True)
+  Path('./metrics/datapoints').mkdir(parents = True, exist_ok = True)
+  Path('./metrics/figures').mkdir(parents = True, exist_ok = True)
     
   # Load Model
   device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -102,20 +113,20 @@ def evaluate_model(
   
   # Output ROC JSON
   auc_value = generate_roc_data(
-    Path('../metrics/datapoints'),
+    Path('./metrics/datapoints'),
     ground_truth,
     estimations
   )
   
   # Output PR-Curve JSON and PR-AUC
   prauc_value = generate_pr_auc(
-    Path('../metrics/datapoints'),
+    Path('./metrics/datapoints'),
     ground_truth,
     estimations
   )
       
   # Generate Structured JSON for all metrics reported
-  summary_file = Path('../metrics/datapoints') / 'summary.json'
+  summary_file = Path('./metrics/datapoints') / 'summary.json'
   with open(summary_file, 'w') as summary:
     json.dump(
       {
@@ -135,6 +146,23 @@ def evaluate_model(
       summary,
       indent = 4
     )
+
+if __name__ == '__main__':
+  arguments = parse_command_options()
   
-  LOGGER.info('Finished Model Evaluation.')
+  # Set the device
+  device = "cuda" if torch.cuda.is_available() else "cpu"
   
+  # Log the device
+  LOGGER.info("🤖 Evaluating Model.")
+  
+  # Load the configuration
+  configuration = CONFIGURATOR(arguments.config, arguments.dataset, device)
+  
+  # Evaluate the model
+  evaluate_model(
+    configuration,
+    arguments.model,
+    debug = True
+  )
+  LOGGER.info("🤖 Finished Evaluating Model. Exiting!")

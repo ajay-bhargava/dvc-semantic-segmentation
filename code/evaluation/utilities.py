@@ -43,7 +43,7 @@ def evaluate_selection(
   ax[2].set_title('Prediction')
   for n in range(3):
     ax[n].axis('off')
-  f.savefig('../metrics/figures/evaluation.png', bbox_inches='tight', dpi = 300)
+  f.savefig('./metrics/figures/evaluation.png', bbox_inches='tight', dpi = 300)
   plt.close(f)
   
   # Calculate metrics for single mask versus prediction.
@@ -107,4 +107,6 @@ def generate_pr_auc(
       file,
       indent = 4
     )
+  
+  LOGGER.info(f'PR AUC Data Saved.')
   return metrics.average_precision_score(truths, estimates)
