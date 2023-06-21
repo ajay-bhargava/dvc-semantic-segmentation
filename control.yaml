@@ -6,8 +6,8 @@ train:
     delta: 0.01
     learning_rate: 0.001
     image_longest_dimension: 512 # pixels
-    batch_size: 4
-    num_workers: 2
+    batch_size: 1
+    num_workers: 1
     encoder_name: "timm-efficientnet-b8"
     encoder_weights: "imagenet"
     in_channels: 3
@@ -22,7 +22,7 @@ test:
   hyperparameters:
     image_longest_dimension: 512 # pixels
     batch_size: 2
-    num_workers: 1
+    num_workers: 0
     classes: # Classes and their corresponding identity number. 0 is background.
       background: 0
       pets: 1

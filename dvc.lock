@@ -19,8 +19,8 @@ stages:
     cmd: python3 code/train.py --dataset data/computed/pets-dataset/ --config ./control.yaml
     deps:
     - path: ./control.yaml
-      md5: 7f762b31e8c7f1c34d8396af913cecc0
-      size: 649
+      md5: 25050a3a6d2d74f98248fbe08ad7f7a3
+      size: 650
     - path: code/train.py
       md5: 737a412a47bad4029fdf5b7d1cbd6252
       size: 2380
@@ -30,8 +30,32 @@ stages:
       nfiles: 14780
     outs:
     - path: models/best_model.pth
-      md5: 98040ce43915d463b9d63abc5edac1ae
-      size: 354529343
+      md5: 0e72b0228e512c9ad6be32e6e9539a28
+      size: 354509823
     - path: models/latest_model.pth
-      md5: 78710121f4c02179ac554c5feda1c5a6
-      size: 354532131
+      md5: 5cbbae028fa2a537f63f0b3d1224ced8
+      size: 354512611
+  evaluate_model:
+    cmd: python3 code/eval.py --dataset data/computed/pets-dataset/ --model models/best_model.pth
+      --config ./control.yaml
+    deps:
+    - path: ./control.yaml
+      md5: 25050a3a6d2d74f98248fbe08ad7f7a3
+      size: 650
+    - path: data/computed/pets-dataset/
+      md5: 74705f83cc29e888440e4150ecb5249c.dir
+      size: 1525937273
+      nfiles: 14780
+    - path: models/best_model.pth
+      md5: 0e72b0228e512c9ad6be32e6e9539a28
+      size: 354509823
+    outs:
+    - path: metrics/datapoints/pr_curve.json
+      md5: a6287f0546b48f0fc0cdcc4a4d1fdc03
+      size: 308023
+    - path: metrics/datapoints/roc.json
+      md5: d76f27953968370046c6ee6ce89dbb90
+      size: 289114
+    - path: metrics/datapoints/summary.json
+      md5: 91d0bb168ac14c956100b7dcc5330d4f
+      size: 345
